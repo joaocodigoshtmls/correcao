@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Migração do Banco - FACEREC</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #4a5568;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            margin: 10px 0;
+            transition: transform 0.2s;
+        }
+        button:hover { transform: translateY(-2px); }
+        button:disabled { 
+            background: #ccc; 
+            cursor: not-allowed; 
+            transform: none;
+        }
+        
+        .step {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #007bff;
+        }
+        .step h3 {
+            margin-top: 0;
+            color: #007bff;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007bff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 Migração do Banco de Dados</h1>
+        <p>Esta página permite executar a migração necessária para adicionar a funcionalidade de foto de perfil.</p>
+
+        <div class="step">
+            <h3>📋 O que será feito:</h3>
+            <ul>
+                <li>Verificar se a coluna <code>profile_picture</code> existe na tabela <code>users</code></li>
+                <li>Se não existir, adicionar a coluna</li>
+                <li>Validar se a migração foi bem-sucedida</li>
+            </ul>
+        </div>
+
+        <button id="migrateBtn" onclick="executeMigration()">
+            🚀 Executar Migração
+        </button>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Executando migração...</p>
+        </div>
+
+        <div id="result"></div>
+
+        <div class="step">
+            <h3>🎯 Próximos passos após a migração:</h3>
+            <ol>
+                <li>Aguardar confirmação de sucesso</li>
+                <li>Fechar esta página</li>
+                <li>Voltar ao sistema e ir em <strong>Configurações</strong></li>
+                <li>Testar o upload de foto de perfil</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        async function executeMigration() {
+            const btn = document.getElementById('migrateBtn');
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            
+            // Mostrar loading
+            btn.disabled = true;
+            loading.style.display = 'block';
+            result.innerHTML = '';
+            
+            try {
+                const response = await fetch('http://localhost:3001/api/migrate-database');
+                const data = await response.json();
+                
+                loading.style.display = 'none';
+                
+                if (data.success) {
+                    if (data.alreadyExists) {
+                        result.innerHTML = `
+                            <div class="status info">
+                                <strong>ℹ️ Informação:</strong> ${data.message}
+                                <br><br>
+                                A funcionalidade de foto de perfil já está disponível!
+                            </div>
+                        `;
+                    } else {
+                        result.innerHTML = `
+                            <div class="status success">
+                                <strong>✅ Sucesso!</strong> ${data.message}
+                                <br><br>
+                                A funcionalidade de foto de perfil foi habilitada com sucesso!
+                            </div>
+                        `;
+                    }
+                } else {
+                    result.innerHTML = `
+                        <div class="status error">
+                            <strong>❌ Erro:</strong> ${data.error}
+                            <br><br>
+                            Tente novamente ou entre em contato com o suporte.
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                loading.style.display = 'none';
+                result.innerHTML = `
+                    <div class="status error">
+                        <strong>❌ Erro de conexão:</strong> ${error.message}
+                        <br><br>
+                        Verifique se o servidor backend está rodando.
+                    </div>
+                `;
+            }
+            
+            btn.disabled = false;
+        }
+    </script>
+</body>
+</html>

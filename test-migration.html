@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Migração DB</title>
+</head>
+<body>
+    <button onclick="executarMigracao()">Executar Migração</button>
+    <div id="resultado"></div>
+    
+    <script>
+        async function executarMigracao() {
+            try {
+                const response = await fetch('http://localhost:3001/admin/migrate-profile-pictures', {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                document.getElementById('resultado').innerHTML = JSON.stringify(data, null, 2);
+            } catch (error) {
+                document.getElementById('resultado').innerHTML = 'Erro: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

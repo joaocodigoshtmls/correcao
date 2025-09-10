@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+/* === Tema base === */
+:root{
+  /* Fundo do site (ajuste aqui para a cor que preferir) */
+  --bg: 239 243 248;            /* #EFF3F8, um cinza-azulado claro */
+  --card: 255 255 255;          /* cartões */
+  --text: 16 24 40;             /* #101828 */
+  --muted: 102 112 133;         /* #667085 */
+  --brand-hex: #2563EB;         /* azul profissional para botões */
+  --accent-primary: #7C3AED;    /* roxo para destaques */
+  --accent-secondary: #059669;  /* verde para sucessos */
+  --accent-warning: #EA580C;    /* laranja para alertas */
+  
+  /* Layout/escala */
+  --container-max: 72rem;       /* ~1152px */
+  --section-y: 3rem;
+  --radius: 1.25rem;
+
+  /* Controles */
+  --control-h: 44px;
+  --control-pad-x: 14px;
+}
+
+html, body, #root { height: 100%; }
+body{
+  margin: 0;
+  background: rgb(var(--bg));   /* ← FUNDO DO SITE AQUI */
+  color: rgb(var(--text));
+  font-family: 'IBM Plex Sans', Inter, system-ui, ui-sans-serif, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+/* Utilitários globais */
+.container-pro{ max-width: var(--container-max); margin-inline: auto; padding-inline: 1rem; }
+.page{ padding-block: calc(var(--section-y) - 0.5rem); }
+
+.card{
+  background: rgb(var(--card));
+  border-radius: var(--radius);
+  box-shadow: 0 10px 30px rgba(0,0,0,.06);
+}
+
+/* Botões padronizados */
+.btn{
+  display: inline-flex; align-items: center; justify-content: center;
+  height: var(--control-h);
+  padding-inline: calc(var(--control-pad-x) + 2px);
+  border-radius: 12px;
+  font-size: .95rem; font-weight: 500;
+  transition: transform .08s ease, opacity .12s ease, background .12s ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn-solid{ background: var(--brand-hex); color:#fff; }   /* ← “Abrir Câmera” usa isso */
+.btn-solid:hover{ opacity:.95; }
+.btn-ghost{ background: transparent; color: rgb(var(--text)); }
+.btn-ghost:hover{ background: rgba(255,255,255,.7); }
+
+/* Tipografia rápida */
+.kicker{ text-transform: uppercase; letter-spacing:.08em; font-size:.75rem; color: rgb(var(--muted)); }
+.h1{ font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 600; line-height: 1.15; }
+.h2{ font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 600; }
+.p{ color: rgb(var(--muted)); line-height: 1.75; }
+
+/* Links */
+a{ text-decoration-color: transparent; text-underline-offset:4px; color: inherit; }
+a:hover{ text-decoration-color: var(--brand-hex); }
+
+/* Forms */
+input, select, textarea{
+  height: var(--control-h);
+  padding: 0 var(--control-pad-x);
+  border-radius: 10px;
+  border: 1px solid rgba(16,24,40,.12);
+  background: #fff;
+  color: rgb(var(--text));
+  font: inherit;
+}
+textarea{ height: auto; min-height: calc(var(--control-h) * 2); padding-block: 10px; }
+label{ font-size:.9rem; color: rgb(var(--muted)); }
+
+/* Mídia */
+img, video, canvas{ max-width:100%; height:auto; border-radius: 12px; }
+
+/* Micro-animação */
+@keyframes fade { from{opacity:0; transform: translateY(6px);} to{opacity:1; transform:none;} }
+.fade-in{ animation: fade 600ms ease both; }
+
+/* Elementos específicos de IA */
+.ai-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+.ai-pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+.neural-network::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 40%, rgba(124, 58, 237, 0.1) 50%, transparent 60%);
+  animation: neural-scan 3s linear infinite;
+}
+
+@keyframes neural-scan {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Tipografia aprimorada */
+.heading-ai { 
+  font-family: 'IBM Plex Sans', sans-serif; 
+  font-weight: 600; 
+  letter-spacing: -0.025em;
+}
+.text-ai { 
+  font-family: 'IBM Plex Sans', sans-serif; 
+  font-weight: 400; 
+}
+.mono-ai { 
+  font-family: 'JetBrains Mono', monospace; 
+  font-weight: 500; 
+}
+
+/* Sliders e controles AI */
+.slider-ai {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.slider-ai::-webkit-slider-track {
+  width: 100%;
+  height: 8px;
+  cursor: pointer;
+  background: linear-gradient(to right, #e2e8f0, #cbd5e1);
+  border-radius: 4px;
+}
+
+.slider-ai::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(99, 102, 241, 0.3);
+  transition: all 0.2s ease;
+}
+
+.slider-ai::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px rgba(99, 102, 241, 0.4);
+}
+
+/* Efeitos especiais AI */
+.neural-glow {
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+  animation: neural-pulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes neural-pulse {
+  0% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
+  100% { box-shadow: 0 0 30px rgba(139, 92, 246, 0.5); }
+}

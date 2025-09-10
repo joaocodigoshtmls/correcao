@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Login - FaceRec</title>
+</head>
+<body>
+    <h1>Teste de Login</h1>
+    
+    <div id="result"></div>
+    
+    <button onclick="testSignup()">1. Criar usuário teste</button>
+    <button onclick="testLogin()">2. Testar login</button>
+    <button onclick="checkLocalStorage()">3. Verificar localStorage</button>
+    
+    <script>
+        const API_URL = 'http://localhost:3001';
+        
+        async function testSignup() {
+            const result = document.getElementById('result');
+            try {
+                const response = await fetch(`${API_URL}/signup`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        fullName: 'Teste Usuario',
+                        email: 'teste@teste.com',
+                        password: '123456',
+                        phone: '11999999999'
+                    })
+                });
+                
+                const data = await response.json();
+                result.innerHTML = `<pre>Cadastro: ${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                result.innerHTML = `<pre>Erro no cadastro: ${error.message}</pre>`;
+            }
+        }
+        
+        async function testLogin() {
+            const result = document.getElementById('result');
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        email: 'teste@teste.com',
+                        password: '123456'
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('usuario', JSON.stringify({
+                        email: 'teste@teste.com',
+                        nome: 'teste'
+                    }));
+                }
+                
+                result.innerHTML = `<pre>Login: ${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                result.innerHTML = `<pre>Erro no login: ${error.message}</pre>`;
+            }
+        }
+        
+        function checkLocalStorage() {
+            const result = document.getElementById('result');
+            const token = localStorage.getItem('token');
+            const usuario = localStorage.getItem('usuario');
+            
+            result.innerHTML = `<pre>
+Token: ${token}
+Usuario: ${usuario}
+            </pre>`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "name": "mock-cam",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "compression": "^1.8.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "glob": "^11.0.0",
+    "hls": "^0.0.1",
+    "hls.js": "^1.6.12",
+    "mock": "^0.1.1",
+    "morgan": "^1.10.1",
+    "multer": "^2.0.2"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
